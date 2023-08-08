@@ -30,6 +30,20 @@ class MyApp extends StatelessWidget {
           zoom:10,
           tilt:60,
         ),
+        onMapCreated: (controller) {
+          // Add a SymbolLayer for markers.
+          controller.addCircle(
+            CircleOptions(
+              geometry: LatLng(12.972442, 77.580643),
+              circleRadius: 10,
+              circleColor: '#FF0000',
+            ),
+          );
+
+
+          // Add a layer to the map that uses the vector tile source
+
+        },
       ),
     );
   }
