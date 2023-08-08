@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: MapboxMap(
-        minMaxZoomPreference: MinMaxZoomPreference(7,13),
+        // minMaxZoomPreference: MinMaxZoomPreference(7,13),
         styleString: 'mapbox://styles/rahul07sharma/clktkvaqb00co01o2dntb8xqk',
         // 'https://api.mapbox.com/styles/v1/rahul07sharma/clktkvaqb00co01o2dntb8xqk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicmFodWwwN3NoYXJtYSIsImEiOiJjbGtzYmN6NnMwMDF6M2hvYTRvb2FwdDI2In0.7tSwDDTzzWIx1VhtYbfvNQ',
         myLocationEnabled:true,
@@ -34,9 +34,20 @@ class MyApp extends StatelessWidget {
           // Add a SymbolLayer for markers.
           controller.addCircle(
             CircleOptions(
-              geometry: LatLng(12.972442, 77.580643),
+              geometry: LatLng(12.97266, 77.580643),
               circleRadius: 10,
               circleColor: '#FF0000',
+            ),
+          );
+          controller.addLine(
+            LineOptions(
+              geometry: [
+                LatLng(12.772442, 77.580643),
+                LatLng(12.872442, 77.580643),
+                LatLng(12.972442, 77.580643),
+              ],
+              lineColor: '#FF0000',
+              lineWidth: 10,
             ),
           );
 
