@@ -30,21 +30,7 @@ class MyApp extends StatelessWidget {
           zoom:10,
           tilt:60,
         ),
-          annotationOrder:[AnnotationType.symbol,
-            ]
       ),
-
-      // MapboxOverlay(
-        // controller: MapboxOverlayController(),
-        // options: MapboxMapOptions(
-        //   style: Style.dark,
-        //   camera: new CameraPosition(
-        //       target: LatLng(lat: 52.376316, lng: 4.897801),
-        //       zoom: 15.0,
-        //       bearing: 0.0,
-        //       tilt: 0.0),
-        // ),
-
     );
   }
 }
