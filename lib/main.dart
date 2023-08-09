@@ -39,11 +39,17 @@ class _MyAppState extends State<MyApp> {
     );
   }
   void _onMapCreated(MapboxMapController controller) {
+    print("inside _onMapCreated function");
     this.controller = controller;
-
-    // controller.onFeatureTapped.add(onFeatureTap);
+    // controller.addGeoJsonSource("points", _points);
+    // controller.addSource("newLayer", GeojsonSourceProperties(data: _points, lineMetrics: true, tolerance: 0.5));
+    // controller.addGeoJsonSource("moving", _movingFeature(0));
+    // controller.addSource("fills", GeojsonSourceProperties(data: _fills));
+    controller.onFeatureTapped.add(onFeatureTap);
   }
   void onFeatureTap(dynamic featureId, Point<double> point, LatLng latLng) {
+    print("inside onFeatureTap function");
+    print('Tapped feature with id $featureId');
     final snackBar = SnackBar(
       content: Text(
         'Tapped feature with id $featureId',
@@ -55,10 +61,25 @@ class _MyAppState extends State<MyApp> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
   void _onStyleLoadedCallback() async {
+    print("inside _onStyleLoadedCallback function");
+    // controller.addLayer('IND_rds-0cmtd5','7249');
     await controller.addGeoJsonSource("points", _points);
-    await controller.addGeoJsonSource("moving", _movingFeature(0));
+    await controller.addSource("lines", GeojsonSourceProperties(data: _lines));
+    await controller.addSource("newLayer", GeojsonSourceProperties(data: _points));
+    // // controller.addGeoJsonSource("moving", _movingFeature(0));
     await controller.addSource("fills", GeojsonSourceProperties(data: _fills));
-
+    // await controller.addLine(_points as LineOptions);
+    await controller.addLayer("point", 'layerId', LineLayerProperties(
+        lineColor: Colors.red.toHexStringRGB(),
+        lineWidth: [
+          Expressions.interpolate,
+          ["linear"],
+          [Expressions.zoom],
+          11.0,
+          2.0,
+          20.0,
+          10.0
+        ]));
     // await controller.addFillLayer(
     //   "fills",
     //   "fills",
@@ -75,60 +96,70 @@ class _MyAppState extends State<MyApp> {
     //   filter: ['==', 'id', filteredId],
     // );
 
-    await controller.addLineLayer(
-      "fills",
-      "lines",
-      LineLayerProperties(
-          lineColor: Colors.lightBlue.toHexStringRGB(),
-          lineWidth: [
-            Expressions.interpolate,
-            ["linear"],
-            [Expressions.zoom],
-            11.0,
-            2.0,
-            20.0,
-            10.0
-          ]),
-    );
+    // await controller.addLineLayer(
+    //   "fills",
+    //   "lines",
+    //   LineLayerProperties(
+    //
+    //       lineColor: Colors.yellow.toHexStringRGB(),
+    //       lineWidth: [
+    //         Expressions.interpolate,
+    //         ["linear"],
+    //         [Expressions.zoom],
+    //         11.0,
+    //         2.0,
+    //         20.0,
+    //         10.0
+    //       ]),
+    // );
 
     await controller.addCircleLayer(
       "fills",
       "circles",
       CircleLayerProperties(
-        circleRadius: 4,
-        circleColor: Colors.blue.toHexStringRGB(),
+        circleRadius: 30,
+        circleColor: Colors.yellow.toHexStringRGB(),
+
       ),
     );
-
+    await controller.addLineLayer('lines', 'line', LineLayerProperties(
+      lineColor: Colors.red.toHexStringRGB(),
+      lineWidth: 3,
+      lineCap: 'round'
+    ));
+    await controller.addFillLayer('lines', 'fill', FillLayerProperties(
+      fillColor: Colors.blue,
+    ));
     await controller.addSymbolLayer(
       "points",
       "symbols",
       SymbolLayerProperties(
-        iconImage: "{type}-15",
-        iconSize: 2,
+        iconImage: "assets/symbols/3.0x/custom-icon.png",
+        iconColor: Colors.red.toHexStringRGB(),
+        iconSize: 4,
         iconAllowOverlap: true,
       ),
     );
 
-    await controller.addSymbolLayer(
-      "moving",
-      "moving",
-      SymbolLayerProperties(
-        textField: [Expressions.get, "name"],
-        textHaloWidth: 1,
-        textSize: 10,
-        textHaloColor: Colors.white.toHexStringRGB(),
-        textOffset: [
-          Expressions.literal,
-          [0, 2]
-        ],
-        iconImage: "bicycle-15",
-        iconSize: 2,
-        iconAllowOverlap: true,
-        textAllowOverlap: true,
-      ),
-      minzoom: 11,
-    );
+    // await controller.addSymbolLayer(
+    //   "moving",
+    //   "moving",
+    //   SymbolLayerProperties(
+    //     textField: [Expressions.get, "name"],
+    //     textHaloWidth: 1,
+    //     textSize: 10,
+    //     textHaloColor: Colors.white.toHexStringRGB(),
+    //     textOffset: [
+    //       Expressions.literal,
+    //       [0, 2]
+    //     ],
+    //     iconImage: "bicycle-15",
+    //     iconSize: 2,
+    //     iconAllowOverlap: true,
+    //     textAllowOverlap: true,
+    //   ),
+    //   minzoom: 11,
+    // );
 
   }
 }
@@ -137,50 +168,48 @@ final _fills = {
   "features": [
     {
       "type": "Feature",
-      "id": 0, // web currently only supports number ids
-      "properties": <String, dynamic>{'id': 0},
+      "properties": {},
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
-            [151.178099204457737, -33.901517742631846],
-            [151.179025547977773, -33.872845324482071],
-            [151.147000529140399, -33.868230472039514],
-            [151.150838238009328, -33.883172899638311],
-            [151.14223647675135, -33.894158309528244],
-            [151.155999294764086, -33.904812805307806],
-            [151.178099204457737, -33.901517742631846]
+            29.820491307509343,
+            6.91343080763252
           ],
           [
-            [151.162657925954278, -33.879168932438581],
-            [151.155323416087612, -33.890737666431583],
-            [151.173659690754278, -33.897637567778119],
-            [151.162657925954278, -33.879168932438581]
+            28.505379352263915,
+            82.68052296588712,
           ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "id": 1,
-      "properties": <String, dynamic>{'id': 1},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [51.18735077583878, -33.891143558434102],
-            [11.197374605989864, -33.878357032551868],
-            [151.213021560372084, -33.886475683791488],
-            [151.204953599518745, -33.899463918807818],
-            [151.18735077583878, -33.891143558434102]
-          ]
-        ]
+        ],
+        "type": "LineString"
       }
     }
   ]
 };
 
 const _points = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            29.820491307509343,
+            67.91343080763252
+          ],
+          [
+            28.505379352263915,
+            82.68052296588712
+          ]
+        ],
+        "type": "LineString"
+      }
+    }
+  ]
+};
+
+const  _lines = {
   "type": "FeatureCollection",
   "features": [
     {
@@ -242,9 +271,58 @@ const _points = {
         ],
         "type": "Polygon"
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              76.60286835487102,
+              16.061414427280525
+            ],
+            [
+              76.60286835487102,
+              14.122409984879368
+            ],
+            [
+              79.35865831521176,
+              14.122409984879368
+            ],
+            [
+              79.35865831521176,
+              16.061414427280525
+            ],
+            [
+              76.60286835487102,
+              16.061414427280525
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            67.91343080763252,
+            29.820491307509343
+          ],
+          [
+            82.68052296588712,
+            28.505379352263915
+          ]
+        ],
+        "type": "LineString"
+      }
     }
   ]
 };
+
 Map<String, dynamic> _movingFeature(double t) {
   List<double> makeLatLong(double t) {
     final angle = t * 2 * pi;
